@@ -1,16 +1,14 @@
-# sanktuary
+# Sanktuary mobile
 
-A new Flutter project.
+Phone companion for [sanktuary-OS](https://github.com/brahimaann/sanktuary-OS): log in with your nickname + access code,
+browse Teams channels and DMs, read and send messages. Expo (React Native) + Clerk; talks to the existing
+sanktuary-OS API with the Clerk session token as a Bearer header, so the server needs no changes.
 
-## Getting Started
+## Run
 
-This project is a starting point for a Flutter application.
+1. `npm install`
+2. `cp .env.example .env` and paste the Clerk publishable key.
+3. In the Clerk dashboard, turn on **Native applications** (Configure > Native applications) so phones can sign in.
+4. `npx expo start`, then scan the QR code with Expo Go, or press `i` / `a` for a simulator.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Messages refresh every 4 seconds while a conversation is open.
