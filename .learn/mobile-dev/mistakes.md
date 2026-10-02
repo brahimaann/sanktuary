@@ -1,0 +1,1 @@
+# Mistakes — mobile development
