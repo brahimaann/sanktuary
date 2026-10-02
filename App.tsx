@@ -121,10 +121,11 @@ function Chat({ room, back }: { room: Room; back: () => void }) {
   const api = useApi();
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [text, setText] = useState('');
+  const [error, setError] = useState('');
   const path = `/api/chat/${encodeURIComponent(room.id)}`;
 
   // ponytail: polls every 4 s; switch to the /api/live event stream if that ever feels slow.
-  const load = useCallback(() => api(path).then(setMsgs).catch(() => {}), [api, path]);
+  const load = useCallback(() => api(path).then((m) => (setMsgs(m), setError(''))).catch((e) => setError(String(e.message))), [api, path]);
   useEffect(() => {
     load();
     const t = setInterval(load, 4000);
@@ -134,8 +135,13 @@ function Chat({ room, back }: { room: Room; back: () => void }) {
   const send = async () => {
     if (!text.trim()) return;
     setText('');
-    await api(path, { method: 'POST', body: JSON.stringify({ text }) });
-    load();
+    try {
+      await api(path, { method: 'POST', body: JSON.stringify({ text }) });
+      load();
+    } catch (e) {
+      setText(text); // keep the message so it can be resent
+      setError(String((e as Error).message));
+    }
   };
 
   const list = useRef<FlatList<Msg>>(null);
@@ -145,6 +151,7 @@ function Chat({ room, back }: { room: Room; back: () => void }) {
         <Button title="‹ Back" onPress={back} />
         <Text style={s.h1}>{room.title}</Text>
       </View>
+      {!!error && <Text style={s.note}>{error}</Text>}
       <FlatList
         ref={list}
         data={msgs}

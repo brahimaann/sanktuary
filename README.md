@@ -12,3 +12,5 @@ sanktuary-OS API with the Clerk session token as a Bearer header, so the server 
 4. `npx expo start`, then scan the QR code with Expo Go, or press `i` / `a` for a simulator.
 
 Messages refresh every 4 seconds while a conversation is open.
+
+`npm test` runs the screen tests (Clerk and the server are mocked).
